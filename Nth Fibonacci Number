@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef unsigned long long int ulli;
+
+void multiply(ulli a[2][2],ulli b[2][2])
+{
+    ulli p = a[0][0] * b[0][0] + a[0][1] * b[1][0];
+    ulli q = a[0][0] * b[0][1] + a[0][1] * b[1][1]; 
+    ulli r = a[1][0] * b[0][0] + a[1][1] * b[1][0];
+    ulli s = a[1][0] * b[0][1] + a[1][1] * b[1][1];
+    a[0][0] = p;
+    a[0][1] = q;
+    a[1][0] = r;
+    a[1][1] = s;
+}
+
+void power(ulli m[2][2],int n)
+{
+    ulli w[2][2] = { {1,1},{1,0} };
+    if( n == 1)
+        return;
+        
+    power(m,n/2); // eg: a^4 : a^2 * a^2
+    
+    multiply(m,m);
+    
+    if( n & 1)
+        multiply(m,w); //for this case: a^5 : a^2 * a^2 * a
+        
+}
+
+ulli fib(int n)
+{
+    ulli m[2][2] = { {1,1} , {1,0} };
+    power(m,n-1);
+    /*
+    if you multiply the above matrix n times it will generate fibonacci number in this 
+    Sequence : { { fib(n+1) , fib(n)} , { fib(n) , fib(n-1) } }
+    */
+    return m[0][0];
+}
+
+int main() {
+    
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+	int n;
+	cin >> n;
+	cout << n <<"th fibonacci number is : " << fib(n) <<"\n";
+	return 0;
+}
